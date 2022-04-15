@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1 th:text="${'EX2'}"></h1>
+<style>
+	.red{
+		background-color: red;
+	}
+</style>
+	<ul>
+		<th:block th:each="dto : ${list}">
+			<li>
+				<a th:href="@{'/ex4/'+${dto.sno}(first=${dto.sno})}">[[${dto}]]</a>
+				<h3 th:text="${#temporals.format(dto.regTime,'yyyy/MM/dd')}"></h3>
+			</li>
+		</th>
+	</ul>
+</body>
+</html>
