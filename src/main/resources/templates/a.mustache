@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-1.11.3.js""></script>
+<script src="https://nhn.github.io/tui.grid/latest/dist/tui-grid.js"></script>
+<link rel="stylesheet" href="/tui-grid.css" type="text/css">
+</head>
+<body>
+	<div id="grid">
+		dd
+	</div>
+	<script charset="utf-8">
+	window.onload = function(){
+		const grid = new tui.Grid({
+		      el: document.getElementById('grid'),
+		      //data: gridData,
+		      scrollX: false,
+		      scrollY: false,
+		      columns: [
+		        {
+		          header: 'Name',
+		          name: 'name'
+		        },
+		        {
+		          header: 'Artist',
+		          name: 'artist'
+		        },
+		        {
+		          header: 'Type',
+		          name: 'type'
+		        },
+		        {
+		          header: 'Release',
+		          name: 'release'
+		        },
+		        {
+		          header: 'Genre',
+		          name: 'genre'
+		        }
+		      ]
+		    });
+		$.ajax({
+			url : "ajax/toastList", //혹은 toastDataList
+			method : "post",
+			dataType:"json",
+			success : (res)=>{
+				console.dir(res);
+				//array를 매개변수에 넣는다,공식문서 참고
+				//grid.resetData() : 해당 데이터를 그리드로 뿌려주는 함수!
+				grid.resetData(res);
+			}
+		});
+	};
+
+	</script>
+</body>
+</html>
