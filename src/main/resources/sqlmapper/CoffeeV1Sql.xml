@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.coffee.dao.CoffeeV1Dao">
+
+    <!-- 전체 리스트 조회 -->
+    <select id="doCoffeeList" resultType="map">
+        SELECT coffee_id,name,kind,price,
+        DATE_FORMAT(reg_day,'%Y.%m.%d') AS reg_day,DATE_FORMAT(mod_day,'%Y.%m.%d') AS mod_day
+        FROM coffee
+        WHERE 1=1
+        <!--등록 기간 쿼리 -->
+        <choose>
+            <when test="strStart_date == null">
+                AND reg_day >= DATE_ADD(NOW(),INTERVAL -7 DAY)
+            </when>
+            <otherwise>
+                <![CDATA[
+                AND reg_day >= DATE_FORMAT(#{strStart_date},'%Y%m%d')
+                AND reg_day < DATE_ADD(DATE_FORMAT(#{strEnd_date},'%Y%m%d'),INTERVAL+1 DAY)
+                 ]]>
+            </otherwise>
+        </choose>
+        <if test="strName != null and strName != ''">
+            AND name LIKE CONCAT(#{strName},'%')
+        </if>
+        <!-- 종류 쿼리 -->
+        <if test="strKind != null and strKind != 'ALL'">
+            AND kind = #{strKind}
+        </if>
+    </select>
+
+    <!-- 커피 메뉴 등록하기, 파라메터는 자동으로 인식됨, 가격은 숫자로 변환 -->
+    <insert id="doInsert">
+        INSERT INTO coffee(name,kind,price)
+        VALUES (#{name},#{kind},CAST(#{price} as INTEGER))
+    </insert>
+
+    <!-- 수정하기 -->
+
+    <!-- 1 row 조회 -->
+    <select id="doListOne" resultType="map">
+        SELECT coffee_id,name,kind,price,
+            DATE_FORMAT(reg_day,'%Y.%m.%d') AS reg_day, DATE_FORMAT(mod_day,'%Y.%m.%d') AS mod_day
+        FROM coffee
+        WHERE coffee_id = CAST(#{strCoffee_id} as INTEGER)
+    </select>
+
+    <!-- 커피 메뉴 수정하기, 파라메터는 자동으로 인식됨, 가격은 숫자로 변환 -->
+    <update id="doUpdate">
+        UPDATE coffee
+        SET name=#{strName},kind=#{strKind},price=CAST(#{strPrice} as INTEGER)
+        WHERE coffee_id = CAST(#{strCoffee_id} as INTEGER)
+    </update>
+
+    <!--커피 메뉴 삭제 1 row -->
+    <delete id="doDelete">
+        DELETE FROM coffee
+        WHERE coffee_id = CAST(#{strCoffee_id} AS INTEGER)
+    </delete>
+</mapper>
