@@ -26,10 +26,10 @@
                 <label>등록기간</label><input type="date" id="start_date" name="start_date" min="2020-01-01" max="2023-12-31">
                 - <input type="date" id="end_date" name="end_date" min="2020-01-01" max="2023-12-31">
                 &nbsp;&nbsp;
-                <label>메뉴명</label> <input type="text" name="name">
+                <label>메뉴명</label> <input type="text" id="name" name="name">
                 &nbsp;&nbsp;
                 <label>종류</label>
-                <select name="kind">
+                <select name="kind" id="kind">
                     <option value="ALL">전체</option>
                     <option value="1.커피">1.커피</option>
                     <option value="2.에이드">2.에이드</option>
@@ -113,7 +113,7 @@ function loadDocArray() {
 
             /* JSON 데이터 넣기 */
             let ajaxTD = "";
-            for(let i in myAjax.coffee_list){
+            for(let i in myAjax.coffee_list){ //여기서 i는 index값!!
                 ajaxTD += '<tr id="tr_loop" className="tr_td">';
                 ajaxTD += '<td><input type="checkbox" name="coffee_id" value="ID"></td>';
                 ajaxTD += '<td>'+ myAjax.coffee_list[i].coffee_id +'</td>';
@@ -129,8 +129,18 @@ function loadDocArray() {
             document.getElementById("t_body").innerHTML = ajaxTD;
         }
     };
-    xhttp.open("GET", "/txt/ajax_array.txt");
+    /* GET방식
+    xhttp.open("GET", "/v1/coffeeAjax");
     xhttp.send();
+    */
+    /* POST 방식 : https://www.w3schools.com/js/js_ajax_http_send.asp */
+    let $start_date = document.getElementById("start_date").value;
+    let $end_date = document.getElementById("end_date").value;
+    let $name = document.getElementById("name").value;
+    let $kind = document.getElementById("kind").value;
+  xhttp.open("POST", "/v1/coffeeAjaxPost");
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("start_date="+$start_date+"&end_date="+$end_date+"&name="+$name+"&kind="+$kind);
 }
 
 </script>
