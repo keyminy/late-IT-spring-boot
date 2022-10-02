@@ -24,8 +24,8 @@ public class CoffeeV1 {
     @GetMapping("/coffee")
     public String doCoffee(Model model){
         /* 전체 리스트 조회*/
-        List<Map<String,String>> list =  v1Service.doCoffeeList();
-        model.addAttribute("list",list);
+        //List<Map<String,String>> list =  v1Service.doCoffeeList();
+        //model.addAttribute("list",list);
        //System.out.println(list);
         return "/v1/coffee";
     }

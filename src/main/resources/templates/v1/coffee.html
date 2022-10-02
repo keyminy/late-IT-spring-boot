@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/css/coffee.css">
 
 </head>
-<body>
+<body onload="loadDocArray()">
 
 
 <!--헤더 위치 -->
@@ -20,7 +20,7 @@
 
     <div id="search" style="height: 150px;padding: 15px; font-size: small">
         <h3>[ JavaScript (No jQuery) , No Vo, No Yaml ]</h3>
-        <form name="coffeeV1" autocomplete="on" action="/v1/coffee" method="post">
+        <form name="coffeeV1" autocomplete="on" action="/v1/coffee" method="post" onSubmit="return fSearch()">
             <fieldset>
                 <legend> [검색조건] </legend>
                 <label>등록기간</label><input type="date" id="start_date" name="start_date" min="2020-01-01" max="2023-12-31">
@@ -39,6 +39,8 @@
                 <button style="width: 80px;height: 30px;font-weight: bold; font-size: medium"><a href="/v1/insert">등록</a></button>
                 <button style="width: 80px;height: 30px;font-weight: bold; font-size: medium"><a href="/v1/deleteAll">삭제</a></button>
                 <a href="javascript:loadDocArray()">ajax</a>
+                <!-- 체크박수 갯수 세기 -->
+                <label>CheckBox : </label><span id="idCheckBox"></span>
             </fieldset>
         </form>
     </div>
@@ -88,7 +90,6 @@
   const time7 = new Date(now.setDate(now.getDate() - 200));
   document.getElementById("start_date").value=time7.toISOString().slice(0,10);
   document.getElementById("end_date").value=new Date().toISOString().slice(0,10);
-
  /* Ajax 호출 https://www.w3schools.com/xml/ajax_xmlhttprequest_create.asp */
  /*
 function loadDoc() {
@@ -102,11 +103,26 @@ function loadDoc() {
   xhttp.send();
 }
 */
-function loadDocArray() {
+
+function fSearch(){
+    //return true면 form의 action부분 실행,false면 실행 X
+    console.log('fSearch!');
+    loadDocArray(fChkLength); //콜백함수 호출 방법
+  console.log('116',document.getElementsByName("coffee_id").length);
+    return false;
+}
+
+function fChkLength(){
+ document.getElementById("idCheckBox").innerHTML = String(document.getElementsByName("coffee_id").length);
+}
+
+function loadDocArray(myCallBack) {
     const xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function() {
+        /* ajax시작 */
         if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("t_body").innerHTML = "<img src='/img/loading.gif' alt='Loading'>";
             console.log(this.responseText); //그냥 text를 뿌리는 것
             const myAjax = JSON.parse(this.responseText); //JS객체로 인식하게 해주고 변수에 대입
             console.log(myAjax);
@@ -127,6 +143,7 @@ function loadDocArray() {
                 ajaxTD += '</tr>';
             }
             document.getElementById("t_body").innerHTML = ajaxTD;
+           myCallBack();
         }
     };
     /* GET방식
@@ -138,7 +155,7 @@ function loadDocArray() {
     let $end_date = document.getElementById("end_date").value;
     let $name = document.getElementById("name").value;
     let $kind = document.getElementById("kind").value;
-  xhttp.open("POST", "/v1/coffeeAjaxPost");
+  xhttp.open("POST", "/v1/coffeeAjaxPost",true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("start_date="+$start_date+"&end_date="+$end_date+"&name="+$name+"&kind="+$kind);
 }
