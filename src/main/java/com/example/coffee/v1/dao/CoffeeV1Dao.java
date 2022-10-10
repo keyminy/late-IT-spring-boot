@@ -1,4 +1,4 @@
-package com.example.coffee.dao;
+package com.example.coffee.v1.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 

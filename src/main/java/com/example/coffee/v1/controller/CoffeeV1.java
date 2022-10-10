@@ -1,10 +1,9 @@
-package com.example.coffee.controller;
+package com.example.coffee.v1.controller;
 
-import com.example.coffee.service.CoffeeV1Service;
+import com.example.coffee.v1.service.CoffeeV1Service;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
