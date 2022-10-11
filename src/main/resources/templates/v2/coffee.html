@@ -146,8 +146,8 @@ function loadDocArray(myCallBack) {
             ajaxTD += '<td>'+ myAjax.coffee_list[i].price +'</td>';
             ajaxTD += '<td>'+ myAjax.coffee_list[i].reg_day +'</td>';
             ajaxTD += '<td>'+ myAjax.coffee_list[i].mod_day +'</td>';
-            ajaxTD += '<td><a href="/v1/update?coffee_id=' + myAjax.coffee_list[i].coffee_id + '">수정</a></td>';
-            ajaxTD += '<td><a href="/v1/delete?coffee_id=' + myAjax.coffee_list[i].coffee_id + '">삭제</a></td>';
+            ajaxTD += '<td><a href="/v2/update?coffee_id=' + myAjax.coffee_list[i].coffee_id + '">수정</a></td>';
+            ajaxTD += '<td><a href="/v2/delete?coffee_id=' + myAjax.coffee_list[i].coffee_id + '">삭제</a></td>';
             ajaxTD += '</tr>';
          }
            $("#t_body").html(ajaxTD);

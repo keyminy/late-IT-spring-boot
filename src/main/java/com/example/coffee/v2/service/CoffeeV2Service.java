@@ -1,6 +1,7 @@
 package com.example.coffee.v2.service;
 
 import com.example.coffee.v2.dao.CoffeeV2Dao;
+import com.example.coffee.v2.vo.VoCoffeeV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +21,13 @@ public class CoffeeV2Service {
     }
 
     /* 전체 리스트 - 오버로딩 함수 사용 */
-    public List<Map<String, String>> doCoffeeList(String strStart_date, String strEnd_date, String strName, String strKind) {
-        List<Map<String,String>> list = v2Dao.doCoffeeList(strStart_date,strEnd_date,strName,strKind);
+    public List<VoCoffeeV2> doCoffeeList(String strStart_date, String strEnd_date, String strName, String strKind) {
+        List<VoCoffeeV2> list = v2Dao.doCoffeeList(strStart_date,strEnd_date,strName,strKind);
         return list;
     }
 
-    public int doInsert(String name, String kind, String price) {
-        int intI = v2Dao.doInsert(name,kind,price);
+    public int doInsert(VoCoffeeV2 voCoffeeV2) {
+        int intI = v2Dao.doInsert(voCoffeeV2);
         return intI;
     }
 
@@ -37,8 +38,8 @@ public class CoffeeV2Service {
     }
 
     /* 수정하기 POST */
-    public int doUpdate(String strCoffee_id,String strName,String strKind,String strPrice){
-        int intI = v2Dao.doUpdate(strCoffee_id,strName,strKind,strPrice);
+    public int doUpdate(VoCoffeeV2 voCoffeeV2){
+        int intI = v2Dao.doUpdate(voCoffeeV2);
         return intI;
     }
 

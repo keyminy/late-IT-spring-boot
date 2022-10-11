@@ -5,7 +5,7 @@
 <mapper namespace="com.example.coffee.v2.dao.CoffeeV2Dao">
 
     <!-- 전체 리스트 조회 -->
-    <select id="doCoffeeList" resultType="map">
+    <select id="doCoffeeList" resultType="com.example.coffee.v2.vo.VoCoffeeV2">
         SELECT coffee_id,name,kind,price,
         DATE_FORMAT(reg_day,'%Y.%m.%d') AS reg_day,DATE_FORMAT(mod_day,'%Y.%m.%d') AS mod_day
         FROM coffee
@@ -50,8 +50,8 @@
     <!-- 커피 메뉴 수정하기, 파라메터는 자동으로 인식됨, 가격은 숫자로 변환 -->
     <update id="doUpdate">
         UPDATE coffee
-        SET name=#{strName},kind=#{strKind},price=CAST(#{strPrice} as INTEGER)
-        WHERE coffee_id = CAST(#{strCoffee_id} as INTEGER)
+        SET name=#{name},kind=#{kind},price=CAST(#{price} as INTEGER)
+        WHERE coffee_id = CAST(#{coffee_id} as INTEGER)
     </update>
 
     <!--커피 메뉴 삭제 1 row -->
