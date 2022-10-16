@@ -59,4 +59,36 @@
         DELETE FROM coffee
         WHERE coffee_id = CAST(#{strCoffee_id} AS INTEGER)
     </delete>
+    <!-- 한개값 입력 -->
+    <insert id="doInsertLogOld">
+        INSERT INTO coffee_log(coffee_id,price)
+        VALUES(CAST(#{coffee_id} AS INTEGER),CAST(#{strPrice} AS INTEGER))
+    </insert>
+    <!-- 한개값 수정 -->
+    <update id="doUpdatePriceOld">
+        UPDATE coffee
+        SET price=CAST(#{strPrice} as INTEGER)
+        WHERE coffee_id = CAST(#{coffee_id} as INTEGER)
+    </update>
+    <!-- v2버전 -->
+    <!-- 일괄처리 한개값 입력 v2-->
+    <insert id="doInsertLog">
+        INSERT INTO coffee_log(coffee_id,price)
+        <foreach item="coffee_id" index="index" collection="chkList" separator=" UNION ALL " nullable="true">
+            SELECT CAST(#{coffee_id} as INTEGER),CAST(#{strPrice} as INTEGER) FROM DUAL
+        </foreach>
+    </insert>
+
+    <!-- 일괄처리 한개값 수정 v2-->
+    <update id="doUpdatePrice">
+        UPDATE coffee
+        SET price=CAST(#{strPrice} as INTEGER)
+        WHERE 1=1
+        AND coffee_id IN
+        <foreach item="coffee_id" index="index" collection="chkList" separator="," open="(" close=")" nullable="true">
+            CAST(#{coffee_id} as INTEGER)
+        </foreach>
+    </update>
+
+
 </mapper>

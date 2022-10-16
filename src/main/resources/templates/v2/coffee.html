@@ -35,7 +35,7 @@
                 </select>
                 <input type="submit" value="조회" style="width: 80px;height: 30px;font-weight: bold; font-size: medium">
                 <button style="width: 80px;height: 30px;font-weight: bold; font-size: medium"><a href="/v2/insert">등록</a></button>
-                <button style="width: 80px;height: 30px;font-weight: bold; font-size: medium"><a href="/v2/deleteAll">삭제</a></button>
+                <button type="button" id="IdUpdateAll" style="width: 80px;height: 30px;font-weight: bold; font-size: medium">가격수정</button>
                 <a href="javascript:loadDocArray()">ajax</a>
                 <!-- 체크박수 갯수 세기 -->
                 <label>CheckBox : </label><span id="idCheckBox"></span>
@@ -43,39 +43,41 @@
         </form>
     </div>
 
-
-    <table class="table">
-        <thead>
-        <tr class="tr_td">
-            <th>Chk</th>
-            <th>ID</th>
-            <th>메뉴명</th>
-            <th>종류</th>
-            <th>가격</th>
-            <th>등록일</th>
-            <th>수정일</th>
-            <th>수정</th>
-            <th>삭제</th>
-        </tr>
-        </thead>
-        <tbody id="t_body">
-            <!--데이터 출력 부분 -->
-            <th:block th:each="coffeeV2 : ${list}">
-                <tr class="tr_td">
-                    <td><input type="checkbox" name="coffee_id" value="ID"></td>
-                    <td th:text="${coffeeV2.get('coffee_id')}">ID</td>
-                    <td th:text="${coffeeV2.get('name')}">메뉴명</td>
-                    <td th:text="${coffeeV2.get('kind')}">종류</td>
-                    <td th:text="${coffeeV2.get('price')}">가격</td>
-                    <td th:text="${coffeeV2.get('reg_day')}">등록일</td>
-                    <td th:text="${coffeeV2.get('mod_day')}">수정일</td>
-                    <td><a th:href="@{/v2/update(coffee_id=${coffeeV2.get('coffee_id')})}">수정</a></td>
-                    <td><a th:href="@{/v2/delete(coffee_id=${coffeeV2.get('coffee_id')})}">삭제</a></td>
-                </tr>
-            </th:block>
-        </tbody>
-
-    </table>
+    <form name="formTable" id="IdFormTable" method="post" action="/v2/updatePrice">
+        <table class="table">
+            <thead>
+            <tr class="tr_td">
+                <th>Chk</th>
+                <th>ID</th>
+                <th>메뉴명</th>
+                <th>종류</th>
+                <th>가격</th>
+                <th>등록일</th>
+                <th>수정일</th>
+                <th>수정</th>
+                <th>삭제</th>
+            </tr>
+            </thead>
+            <tbody id="t_body">
+                <!--데이터 출력 부분 -->
+                <th:block th:each="coffeeV2 : ${list}">
+                    <tr class="tr_td">
+                        <td><input type="checkbox" name="chkCoffee_id" value="ID"></td>
+                        <td th:text="${coffeeV2.get('coffee_id')}">ID</td>
+                        <td th:text="${coffeeV2.get('name')}">메뉴명</td>
+                        <td th:text="${coffeeV2.get('kind')}">종류</td>
+                        <td th:text="${coffeeV2.get('price')}">가격</td>
+                        <td th:text="${coffeeV2.get('reg_day')}">등록일</td>
+                        <td th:text="${coffeeV2.get('mod_day')}">수정일</td>
+                        <td><a th:href="@{/v2/update(coffee_id=${coffeeV2.get('coffee_id')})}">수정</a></td>
+                        <td><a th:href="@{/v2/delete(coffee_id=${coffeeV2.get('coffee_id')})}">삭제</a></td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+        <!-- prompt창에서 넣어온 가격값을 hidden태그에 넣어주기 -->
+        <input type="hidden" name="hidden_price">
+    </form>
 </div>
 
 
@@ -139,7 +141,7 @@ function loadDocArray(myCallBack) {
        let ajaxTD = "";
         for(let i in myAjax.coffee_list){ //여기서 i는 index값!!
             ajaxTD += '<tr id="tr_loop" className="tr_td">';
-            ajaxTD += '<td><input type="checkbox" name="coffee_id" value="ID"></td>';
+            ajaxTD += '<td><input type="checkbox" name="chkCoffee_id" value='+myAjax.coffee_list[i].coffee_id+'></td>';
             ajaxTD += '<td>'+ myAjax.coffee_list[i].coffee_id +'</td>';
             ajaxTD += '<td>'+ myAjax.coffee_list[i].name +'</td>';
             ajaxTD += '<td>'+ myAjax.coffee_list[i].kind +'</td>';
@@ -168,6 +170,19 @@ function loadDocArray(myCallBack) {
 $(document).ready(function(){
     $("#OpenClose").click(function(){
        $("#search").slideToggle();
+    });
+
+    // update all Price
+    $("#IdUpdateAll").click(function(){
+      // layer popup대신 js의 prompt사용하는 방식으로 구현
+      let _price = prompt("가격을 입력해 주세요.");
+      if(_price != ""){
+        let _frm = document.formTable; //이렇게 form의 name을 해도되는군??
+        _frm.hidden_price.value = _price; //form안의 <hidden>값
+        _frm.submit(); //form 전송
+      }else{
+        alert("가격을 입력하세요");
+      }
     });
 });
 </script>

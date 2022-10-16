@@ -112,5 +112,25 @@ public class CoffeeV2 {
         return "redirect:/v2/coffee";
     }
 
+    /* 가격을 한번에 수정 */
+    @PostMapping("/updatePrice")
+    public String doUpdatePrice(@RequestParam(value = "hidden_price") String strPrice,
+                                @RequestParam(value = "chkCoffee_id",required = false) List<String> chkList){
+        /* @RequestParam으로도, 여러개의 List값을 받을 수 있다,required=false로 이 값이 없이 넘어와도 오류 안나게 */
+        log.info("strPrice : " + strPrice);
+        log.info("chkList : " + chkList);
 
+        if(chkList != null){
+            int int1 = v2Service.doInsertLog(strPrice,chkList);
+            int int2 = v2Service.doUpdatePrice(strPrice,chkList);
+        }
+
+        /*
+        for(String coffee_id : chkList){
+            int int1 = v2Service.doInsertLogOld(strPrice,coffee_id);
+            int int2 = v2Service.doUpdatePriceOld(strPrice,coffee_id);
+        }
+         */
+        return "redirect:/v2/coffee";
+    }
 }
