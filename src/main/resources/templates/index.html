@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	Hello
+	<span th:text="${single}"></span>
+	<table>
+		<tr th:each="value,inter:${multiple}">
+			<td th:text="${inter.index}"></td>
+			<td th:text="${value}"></td>
+		</tr>
+	</table>
+</body>
+</html>
